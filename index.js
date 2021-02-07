@@ -1,52 +1,50 @@
+
 //start 
 const showFoodDetailsSection=document.getElementById('showFoodDetailsSection');
-const submit=document.getElementById('submit');
-submit.addEventListener('click',function(){ 
-    const errorMessage=document.getElementById('errorMessage');
-    const foodNames=document.getElementById('foodName').value;
-
-    // if error condition check
-    if (foodNames==='' || foodNames===null ) {
-        errorMessage.style.display='block';
-        errorMessage.value='you are wrong please enter any key word';
-        document.getElementById('foodName').value=' ';
-    }
-    else{
-        // else error condition check
-        errorMessage.value=' ';
-        errorMessage.style.display='none';
-        document.getElementById('foodName').value=' ';
-
-        // https request
-        fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${foodNames}`)
-        .then(response=>response.json())
-        .then(data=>  { 
-        const foodDetails=data['meals'];
-        const foodContainer=document.getElementById('foodContainer');
-
-        //forEach section
-        foodDetails.forEach(foods => {
-            //create new element
-            const foodDiv=document.createElement('div');
-            foodDiv.className="foodDetailsSection col-sm-12";
-            foodDiv.id="foodShowDetails"
-            const foodInfo=`<img class="imageControl" src="${foods.strMealThumb}">
-                <h2>${foods.strMeal}</h2> `
-                foodDiv.innerHTML=foodInfo; 
-                foodContainer.appendChild(foodDiv);
-                //food details show section
-                foodDiv.addEventListener('click',function(){
-                    showFoodDetailsSection.style.display='block'
-                    foodDetailsInfo(foods) ;
-                    })
-        });
-        })
-    }
-})
-
+const searchFood=async()=>{ 
+        const foodNames=document.getElementById('foodName').value;
+        if (foodNames==='' ) {
+            const foodContainer=document.getElementById('foodContainer');
+            errorMessage.style.display='block';
+            errorMessage.value='you are wrong please enter any key';
+            foodContainer.style.display='none'
+        }
+        else{
+            const response= await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${foodNames}`);
+            const data = await response.json();
+            foodDetailsDisplay(data)
+            .catch(error=>displayError(error))
+        }
+}
+// show food in display
+const foodDetailsDisplay=data=>{
+    const foodDetails=data['meals'];
+    console.log(foodDetails);
+    const foodContainer=document.getElementById('foodContainer');
+    foodContainer.innerHTML='';
+    foodDetails.forEach(foods => {
+        const foodDiv=document.createElement('div');
+        foodDiv.className="foodDetailsSection col-sm-12";
+        foodDiv.id="foodShowDetails"
+        const foodInfo=`<div>
+            <img class="imageControl" src="${foods.strMealThumb}">
+            <h2>${foods.strMeal}</h2>
+            </div> `
+            foodDiv.innerHTML=foodInfo; 
+            foodContainer.appendChild(foodDiv);
+            //food details show section
+            foodDiv.addEventListener('click',()=>{
+                showFoodDetailsSection.style.display='block'
+                foodDetailsInfo(foods) ;
+                })
+                displayError();
+    });
+}
 //food details show function
-const foodDetailsInfo=foods =>{
-    const showFoodInfo=`  <img class="imageControl" src="${foods.strMealThumb}">
+const foodDetailsInfo= foods =>{
+    const showFoodDetailsSection=document.getElementById('showFoodDetailsSection');
+    showFoodDetailsSection.style.display='block';
+    const showFoodInfo=` <img class="imageControl" src="${foods.strMealThumb}">
         <h2>food Name         : ${foods.strMeal}</h2>
         <P>food Category      : ${foods.strCategory}</P>
         <P>food Tags          : ${foods.strTags}</P>
@@ -69,6 +67,23 @@ const foodDetailsInfo=foods =>{
         <P>food Ingredient14  : ${foods.strIngredient14}</P>
         <P> <span class="foodNode">food Instructions</span> : ${foods.strInstructions}</P>`
         showFoodDetailsSection.innerHTML=showFoodInfo;
+}
+// show in error section
+const displayError=()=>{
+   const errorMessage=document.getElementById('errorMessage');
+    const foodNames=document.getElementById('foodName').value;
+    const foodContainer=document.getElementById('foodContainer');
+    if (foodNames==='' || foodNames===null ) {
+        errorMessage.style.display='block';
+        errorMessage.value='you are wrong please enter any key';
+        foodContainer.style.display='hidden'
+    }
+    else{
+        errorMessage.value=' ';
+        errorMessage.style.display='none';
+        foodContainer.style.display=''
+        
+    }
 }
 
 // thank you
