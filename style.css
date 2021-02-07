@@ -1,0 +1,32 @@
+#foodContainer{
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-gap: 20px;
+    width:90%;
+    text-align: center;
+    font-size: 50px;
+    margin: 0px auto;
+}
+.imageControl{
+    width:270px;
+    height: auto;
+    border-radius: 20px;
+}
+.foodDetailsSection{
+    padding: 0px;
+}
+
+#showFoodDetailsSection{
+    width: 600px;
+    text-align: center;
+    background-color: aquamarine;
+    color: black;
+    padding: 20px;
+    display: none;
+    margin: 0px auto;
+}
+.foodNode{
+    font-size: 40px;
+    font-weight: bold;
+    color: rgb(51, 255, 0);
+}
