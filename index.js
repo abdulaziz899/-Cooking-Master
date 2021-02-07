@@ -69,7 +69,6 @@ const foodDetailsInfo=foods =>{
         <P>food Ingredient14  : ${foods.strIngredient14}</P>
         <P> <span class="foodNode">food Instructions</span> : ${foods.strInstructions}</P>`
         showFoodDetailsSection.innerHTML=showFoodInfo;
-        
 }
 
 // thank you
