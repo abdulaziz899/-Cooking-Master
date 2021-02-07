@@ -15,7 +15,6 @@
 .foodDetailsSection{
     padding: 0px;
 }
-
 #showFoodDetailsSection{
     width: 600px;
     text-align: center;
@@ -29,4 +28,7 @@
     font-size: 40px;
     font-weight: bold;
     color: rgb(51, 255, 0);
+}
+#errorMessage{
+    display: none;
 }
