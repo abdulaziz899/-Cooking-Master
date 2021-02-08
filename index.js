@@ -3,23 +3,25 @@
 const showFoodDetailsSection=document.getElementById('showFoodDetailsSection');
 const searchFood=async()=>{ 
         const foodNames=document.getElementById('foodName').value;
-        if (foodNames==='' ) {
+        if (foodNames==='' || foodNames===null ) {
             const foodContainer=document.getElementById('foodContainer');
             errorMessage.style.display='block';
             errorMessage.value='you are wrong please enter any key';
             foodContainer.style.display='none'
         }
-        else{
+        try{
             const response= await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${foodNames}`);
             const data = await response.json();
-            foodDetailsDisplay(data)
-            .catch(error=>displayError(error))
+            foodDetailsDisplay(data);
         }
-}
+        catch(error){
+            displayError();
+        }
+    }
+
 // show food in display
 const foodDetailsDisplay=data=>{
     const foodDetails=data['meals'];
-    console.log(foodDetails);
     const foodContainer=document.getElementById('foodContainer');
     foodContainer.innerHTML='';
     foodDetails.forEach(foods => {
@@ -40,6 +42,7 @@ const foodDetailsDisplay=data=>{
                 displayError();
     });
 }
+
 //food details show function
 const foodDetailsInfo= foods =>{
     const showFoodDetailsSection=document.getElementById('showFoodDetailsSection');
@@ -68,22 +71,22 @@ const foodDetailsInfo= foods =>{
         <P> <span class="foodNode">food Instructions</span> : ${foods.strInstructions}</P>`
         showFoodDetailsSection.innerHTML=showFoodInfo;
 }
+
 // show in error section
 const displayError=()=>{
-   const errorMessage=document.getElementById('errorMessage');
-    const foodNames=document.getElementById('foodName').value;
     const foodContainer=document.getElementById('foodContainer');
-    if (foodNames==='' || foodNames===null ) {
-        errorMessage.style.display='block';
-        errorMessage.value='you are wrong please enter any key';
-        foodContainer.style.display='hidden'
-    }
-    else{
-        errorMessage.value=' ';
-        errorMessage.style.display='none';
-        foodContainer.style.display=''
-        
-    }
+    const foodNames=document.getElementById('foodName').value;
+    const errorMessage=document.getElementById('errorMessage');
+if (foodNames==='' || foodNames===null  ) {
+    errorMessage.style.display='block';
+    errorMessage.value='you are wrong please enter any key';
+    foodContainer.style.display='hidden';
+}
+else{
+    errorMessage.value=' ';
+    errorMessage.style.display='none';
+    foodContainer.style.display=''
+}
 }
 
 // thank you
